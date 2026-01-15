@@ -1,0 +1,26 @@
+.insights-scroll {
+  background: url("../assets/Untitled design (1).png") center / cover no-repeat;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  scrollbar-width: thin;
+}
+
+.insights-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.insights-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.insights-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.insights-scroll::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}

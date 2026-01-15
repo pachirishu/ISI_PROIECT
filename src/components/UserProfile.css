@@ -1,0 +1,29 @@
+.profile-posts-scroll {
+  scrollbar-color: rgba(0, 0, 0, 0.35) transparent;
+  scrollbar-width: thin;
+}
+
+.profile-posts-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.profile-posts-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.profile-posts-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.profile-posts-scroll::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.profile-background {
+  background: url("../assets/profile.png") center / cover no-repeat;
+}
