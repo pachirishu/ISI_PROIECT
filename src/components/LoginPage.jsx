@@ -16,7 +16,7 @@ import {
   where
 } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
-import LoginBg from '../assets/Untitled design.png';
+import LoginBg from '../assets/Untitled_design.png';
 
 const inputStyle = {
   padding: '14px 14px',
