@@ -1,16 +1,100 @@
-# React + Vite
+# StreetArtView
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+StreetArtView este o aplicatie web realizata cu **React + Vite**, care permite utilizatorilor sa descopere, vizualizeze si adauge puncte de street art pe o harta interactiva. Aplicatia foloseste **Firebase** pentru autentificare, stocarea datelor si a imaginilor.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Echipa proiectului
 
-## React Compiler
+Acest proiect a fost realizat de:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **[Constantin Gabriel](https://github.com/pachirishu)**
+- **[Duminica Ana-Maria](https://github.com/Ana-MariaDuminica)**
+- **[Ureche Andreea-Maria](https://github.com/urecheandreea)**
 
-## Expanding the ESLint configuration
+> Proiect realizat in cadrul disciplinei **ISI**.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Structura proiectului (`src/`)
+
+Structura principala a aplicatiei este urmatoarea:
+
+```
+src/
+│
+├── assets/
+│ ├── imagini statice (iconite, poze UI etc.)
+│
+├── config/
+│ └── firebase.js # Configurarea Firebase (Auth, Firestore, Storage)
+│
+├── components/
+│ ├── AddAttractionForm.jsx # Formular pentru adaugarea unei atractii
+│ ├── MapComponent.jsx # Harta interactiva cu puncte
+│ ├── Navbar.jsx # Bara de navigatie
+│ ├── UserProfile.jsx # Profilul utilizatorului
+│ └── InsightsPage.jsx # Statistici / informatii
+│
+├── utils/
+│ └── funcții auxiliare pentru rutare
+│
+├── App.jsx
+│ └── Definirea rutelor paginilor
+│
+├── main.jsx
+│ └── Punctul de intrare al aplicatiei React
+│
+└── index.css / styles
+```
+
+---
+
+## Rulare proiect local
+
+Pentru a rula proiectul local, urmeaza pasii de mai jos:
+
+### 1️. Creeaza un proiect Firebase
+Acceseaza https://console.firebase.google.com si creeaza un proiect nou.
+
+Activeaza următoarele servicii:
+- **Authentication**
+  - Provider: **Email / Password**
+- **Cloud Firestore**
+- **Firebase Storage**
+
+### 2️. Configureaza Firebase in aplicatie
+
+Creeaza un fisier `.env` in radacina proiectului, pe baza fisierului `.env.example`, si completeaza-l cu cheile tale Firebase:
+
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+### 3. Adaugare Reguli CORS
+
+```
+[
+  {
+    "origin": [
+      "http://localhost:5173"
+    ],
+    "method": ["GET", "POST", "PUT", "DELETE"],
+    "responseHeader": ["Content-Type"],
+    "maxAgeSeconds": 3600
+  }
+]
+```
+
+### 4. Instaleaza Dependintele
+
+```npm install```
+
+### 5. Ruleaza Aplicatia
+
+```npm run dev```
