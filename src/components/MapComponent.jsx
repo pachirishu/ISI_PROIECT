@@ -17,6 +17,9 @@ import {
 import AddAttractionForm from "./AddAttractionForm";
 import AttractionDetails from "./AttractionDetails";
 
+import plusIcon from "../assets/plus-104.png";
+import imageCompression from "browser-image-compression";
+
 // TOKEN HARDCODAT
 const HARDCODED_TOKEN = "mzFcMRqhxzPAoRJavp2MJu4Ie_bLaayoSMVcjvcDYKKgP1xdMSL5dTMxs9Vf04Iw7lmf2hwI4gM4CHr2OlPnh8yHPWZoWzvpmSpkl0KUa23P6MsawvTyz5a7gdkjpZ8lKkM4EfEgF89hl20UhMa8CRRlYZJ8lOUrdePi8ZuDNGXsuLs1sNG38loMu8nv_bgy"; 
 const LAYER_ID = "e6761e71a0754595bd9826b765e5ae05";
@@ -507,7 +510,6 @@ const MapComponent = () => {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const { latitude, longitude, accuracy } = pos.coords;
-        console.log("Coords:", latitude, longitude, "accuracy:", accuracy);
 
         const next = { lat: latitude, lon: longitude };
         setUserLocation(next);
@@ -706,6 +708,7 @@ const MapComponent = () => {
              setUserFavorites(prev => prev.filter(id => id !== fbId));
              setSelectedFeature(null);
              setStatusMsg("Deleted.");
+             setTimeout(() => setStatusMsg(""), 3000);
           } catch (e) {
               console.error("Delete err:", e);
               alert("Error deleting.");
@@ -1007,13 +1010,71 @@ const MapComponent = () => {
   // Stiluri UI
   const btnStyle = { padding: "10px 16px", backgroundColor: isAddMode ? "#dc3545" : "#28a745", color: "white", border: "none", borderRadius: "30px", cursor: "pointer", fontWeight: "bold", fontSize: "14px", boxShadow: "0 2px 6px rgba(0,0,0,0.3)", display: "flex", alignItems: "center", gap: "8px" };
   const formInputStyle = { width: "100%", padding: "8px", marginBottom: "10px", borderRadius: "4px", border: "1px solid #ccc", maxWidth: "-webkit-fill-available"};
-  const handleFileSelect = (event) => {
+  const MAX_FILE_SIZE_MB = 5;
+  const MAX_IMAGES = 5;
+  const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
+  const compressImage = async (file) => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1600,
+      useWebWorker: true
+    };
+
+    return await imageCompression(file, options);
+  };
+
+  const handleFileSelect = async (event) => {
     const files = Array.from(event.target.files || []);
     if (!files.length) return;
-    setFormData((prev) => ({
-      ...prev,
-      imageFiles: [...(prev.imageFiles || []), ...files]
-    }));
+
+    const validImages = [];
+    const errors = [];
+
+    for (const file of files) {
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        errors.push(`${file.name} is not an allowed image type`);
+        continue;
+      }
+
+      if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+        errors.push(`${file.name} is larger than ${MAX_FILE_SIZE_MB}MB`);
+        continue;
+      }
+
+      try {
+        const compressed = await imageCompression(file, {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1600,
+          useWebWorker: true
+        });
+
+        validImages.push(compressed);
+      } catch (err) {
+        console.error("Compression failed:", err);
+        errors.push(`${file.name} could not be processed`);
+      }
+    }
+
+    if (errors.length) {
+      alert(errors.join("\n"));
+    }
+
+    setFormData((prev) => {
+      const existing = prev.imageFiles || [];
+      const combined = [...existing, ...validImages];
+
+      if (combined.length > MAX_IMAGES) {
+        alert(`Maximum ${MAX_IMAGES} images allowed`);
+        return prev;
+      }
+
+      return {
+        ...prev,
+        imageFiles: combined
+      };
+    });
+
     event.target.value = "";
   };
 
@@ -1030,7 +1091,7 @@ const MapComponent = () => {
       {tokenStatus === "valid" && user && !showForm && !selectedFeature && (
           <div style={{ position: "absolute", bottom: "30px", right: "20px", zIndex: 90 }}>
             <button onClick={toggleAddMode} style={{ background: "#F8F1DC", border: "1px solid #ddd", borderRadius: "50%", padding: "10px", width: "56px", height: "56px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 10px rgba(0,0,0,0.15)" }}>
-              <img src="/src/assets/plus-104.png" alt="add" style={{ width: "24px", height: "24px" }} />
+              <img src={plusIcon} alt="add" style={{ width: "24px", height: "24px" }} />
             </button>
           </div>
       )}

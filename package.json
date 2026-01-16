@@ -13,6 +13,7 @@
     "@arcgis/core": "^4.34.8",
     "@arcgis/map-components": "^4.34.9",
     "@arcgis/map-components-react": "^4.34.9",
+    "browser-image-compression": "^2.0.2",
     "esri-loader": "^3.7.0",
     "firebase": "^12.6.0",
     "react": "^19.2.0",
