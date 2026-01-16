@@ -56,6 +56,7 @@ Pentru a rula proiectul local, urmeaza pasii de mai jos:
 
 ### 1️. Creeaza un proiect Firebase
 Acceseaza https://console.firebase.google.com si creeaza un proiect nou.
+> Din motive de securitate nu putem oferi propriile chei
 
 Activeaza următoarele servicii:
 - **Authentication**
